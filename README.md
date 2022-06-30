@@ -1,6 +1,6 @@
 # Changesets Release Action
 
-This action for [Changesets](https://github.com/atlassian/changesets) creates a pull request with all of the package versions updated and changelogs updated and when there are new changesets on master, the PR will be updated. When you're ready, you can merge the pull request and you can either publish the packages to npm manually or setup the action to do it for you.
+This action for [Changesets](https://github.com/atlassian/changesets) creates a pull request with all of the package versions updated and changelogs updated and when there are new changesets on [your configured `baseBranch`](https://github.com/changesets/changesets/blob/main/docs/config-file-options.md#basebranch-git-branch-name), the PR will be updated. When you're ready, you can merge the pull request and you can either publish the packages to npm manually or setup the action to do it for you.
 
 ## Usage
 
@@ -11,6 +11,7 @@ This action for [Changesets](https://github.com/atlassian/changesets) creates a 
 - commit - The commit message to use. Default to `Version Packages`
 - title - The pull request title. Default to `Version Packages`
 - setupGitUser - Sets up the git user for commits as `"github-actions[bot]"`. Default to `true`
+- createGithubReleases - A boolean value to indicate whether to create Github releases after `publish` or not. Default to `true`
 - cwd - Changes node's `process.cwd()` if the project is not located on the root. Default to `process.cwd()`
 
 ### Outputs
@@ -30,7 +31,7 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -66,7 +67,7 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -115,7 +116,6 @@ For example, you can add a step before running the Changesets GitHub Action:
 - name: Creating .npmrc
   run: |
     cat << EOF > "$HOME/.npmrc"
-      email=my@email.com
       //registry.npmjs.org/:_authToken=$NPM_TOKEN
     EOF
   env:
@@ -134,7 +134,7 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   release:
@@ -176,7 +176,7 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
